@@ -27,5 +27,5 @@ void init_mqtt(response_data_t* response_data) {
 }
 
 void subscribe() {
-  esp_mqtt_client_subscribe(client, "/incendio", 2);
+  esp_mqtt_client_subscribe(client, "/aciona/chuveiro", 2);
 }

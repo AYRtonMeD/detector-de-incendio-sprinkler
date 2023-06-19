@@ -7,8 +7,7 @@
 #include "esp_partition.h"
 #include "nvs_flash.h"
 #include "esp_ota_ops.h"
-#include "mqtt_client.h"
-#include "mqtt_cli.h"
+#include "mqtt_gateway.h"
 
 static const char *TAG = "MQTTS_EXAMPLE";
 
@@ -40,8 +39,6 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
 
     case MQTT_EVENT_SUBSCRIBED:
         ESP_LOGI(TAG, "MQTT_EVENT_SUBSCRIBED, msg_id=%d", event->msg_id);
-        //msg_id = esp_mqtt_client_publish(client, "/topic/qos0", "data", 0, 0, 0);
-        //ESP_LOGI(TAG, "sent publish successful, msg_id=%d", msg_id);
         break;
     case MQTT_EVENT_UNSUBSCRIBED:
         ESP_LOGI(TAG, "MQTT_EVENT_UNSUBSCRIBED, msg_id=%d", event->msg_id);
@@ -59,6 +56,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
         response->len = event->data_len;
         strcpy(response->data, event->data);
         response->has_received_data = 1;
+        vTaskDelay(500 / portTICK_PERIOD_MS);
 
         break;
     case MQTT_EVENT_ERROR:
